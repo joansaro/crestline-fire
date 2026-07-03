@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../PageHeader.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { apparatus } from '../../data/department';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t('apparatus.title')}>
+  <PageHeader
+    kicker={t('brand.short')}
+    title={t('apparatus.title')}
+    subtitle={t('apparatus.subtitle')}
+    image="https://upload.wikimedia.org/wikipedia/commons/e/ec/BFP_Isuzu_Giga_Aerial_Ladder_Fire_Truck.jpg"
+  />
+
+  <section class="bg-ink-50 py-20">
+    <div class="container-page grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        apparatus.map((a) => (
+          <article class="card-hover reveal overflow-hidden rounded-xl border border-ink-200 bg-white shadow-sm">
+            <div class="aspect-[16/10] overflow-hidden">
+              <img src={a.image} alt={a.name[lang]} class="h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between">
+                <h3 class="heading-condensed text-xl uppercase text-ink-900">{a.name[lang]}</h3>
+                <span class="rounded bg-fire-700 px-2 py-1 text-xs font-bold text-white">{a.unit}</span>
+              </div>
+              <p class="mt-1 text-sm text-ink-600">{a.type[lang]}</p>
+              <dl class="mt-4 flex justify-between border-t border-ink-100 pt-3 text-sm">
+                <div>
+                  <dt class="text-[10px] uppercase tracking-wider text-ink-400">{t('apparatus.year')}</dt>
+                  <dd class="font-semibold text-ink-800">{a.year}</dd>
+                </div>
+                <div class="text-right">
+                  <dt class="text-[10px] uppercase tracking-wider text-ink-400">{t('apparatus.assigned')}</dt>
+                  <dd class="font-semibold text-ink-800">{a.station}</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,57 @@
+---
+import { getLangFromUrl, useTranslations, localizePath } from '../../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const bullets = ['join.bullet.training', 'join.bullet.benefits', 'join.bullet.team'] as const;
+---
+
+<section class="relative isolate overflow-hidden bg-ink-950 py-20 text-white">
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Defense.gov_News_Photo_120723-F-HA794-089_-_A_U.S._Air_Force_firefighter_sprays_water_at_the_fire_of_a_simulated_C-130_Hercules_plane_crash_during_operational_readiness_exercise_Beverly.jpg/1920px-thumbnail.jpg"
+    alt=""
+    class="absolute inset-0 -z-10 h-full w-full object-cover opacity-25"
+    loading="lazy"
+  />
+  <div class="hero-overlay absolute inset-0 -z-10"></div>
+
+  <div class="container-page grid items-center gap-12 lg:grid-cols-2">
+    <div class="reveal">
+      <p class="kicker !text-fire-400">{t('join.kicker')}</p>
+      <h2 class="mt-3 text-3xl uppercase sm:text-4xl md:text-5xl">{t('join.title')}</h2>
+      <p class="mt-4 max-w-xl text-lg text-ink-200">{t('join.subtitle')}</p>
+      <ul class="mt-6 space-y-3">
+        {
+          bullets.map((b) => (
+            <li class="flex items-center gap-3 text-ink-100">
+              <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-fire-600">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </span>
+              {t(b)}
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href={localizePath('/join', lang)}
+        class="mt-8 inline-block rounded-md bg-fire-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-fire-900/40 transition-all hover:-translate-y-0.5 hover:bg-fire-500"
+      >
+        {t('join.cta')}
+      </a>
+    </div>
+
+    <div class="reveal rounded-xl border border-white/15 bg-white/5 p-7 backdrop-blur">
+      <h3 class="heading-condensed text-xl uppercase text-white">{t('join.req.title')}</h3>
+      <ul class="mt-5 space-y-4">
+        {
+          (['join.req1', 'join.req2', 'join.req3', 'join.req4'] as const).map((r, i) => (
+            <li class="flex items-start gap-4 border-b border-white/10 pb-4 last:border-0 last:pb-0">
+              <span class="heading-condensed text-2xl font-bold text-fire-500">0{i + 1}</span>
+              <span class="pt-1 text-ink-100">{t(r)}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

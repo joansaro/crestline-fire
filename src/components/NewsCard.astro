@@ -1,0 +1,30 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import type { NewsItem } from '../data/department';
+interface Props { item: NewsItem; }
+const { item } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const date = new Date(item.date).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+---
+
+<article class="card-hover reveal flex flex-col overflow-hidden rounded-xl border border-ink-200 bg-white shadow-sm">
+  <div class="relative aspect-[16/9] overflow-hidden">
+    <img src={item.image} alt={item.title[lang]} class="h-full w-full object-cover" loading="lazy" />
+    <span class="absolute left-3 top-3 rounded bg-ink-950/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
+      {item.tag[lang]}
+    </span>
+  </div>
+  <div class="flex flex-1 flex-col p-5">
+    <time class="text-xs uppercase tracking-wider text-ink-400">{date}</time>
+    <h3 class="mt-2 heading-condensed text-lg leading-tight text-ink-900">{item.title[lang]}</h3>
+    <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-600">{item.excerpt[lang]}</p>
+    <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-fire-600">
+      {t('news.readMore')}
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </span>
+  </div>
+</article>

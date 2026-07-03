@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../PageHeader.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { contact } from '../../data/department';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const info = [
+  { label: t('contact.address'), value: contact.address, icon: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z' },
+  { label: t('contact.phone'), value: contact.phone, icon: 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z' },
+  { label: t('contact.email'), value: contact.email, icon: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 2 8 7 8-7' },
+  { label: t('contact.hours'), value: t('contact.hours.value'), icon: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2' },
+];
+---
+
+<BaseLayout title={t('contact.title')}>
+  <PageHeader
+    kicker={t('brand.short')}
+    title={t('contact.title')}
+    subtitle={t('contact.subtitle')}
+    image="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Willits_Fire_Station_54_-_February_2023_-_Sarah_Stierch_05.jpg/1920px-Willits_Fire_Station_54_-_February_2023_-_Sarah_Stierch_05.jpg"
+  />
+
+  <!-- Emergency banner -->
+  <section class="bg-fire-700 py-6 text-center text-white">
+    <div class="container-page">
+      <p class="heading-condensed text-xl uppercase tracking-wide sm:text-2xl">
+        {t('emergency.label')} — {t('emergency.call')}
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-ink-50 py-20">
+    <div class="container-page grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <!-- Info -->
+      <div class="reveal">
+        <h2 class="text-3xl uppercase sm:text-4xl">{t('contact.hq')}</h2>
+        <ul class="mt-8 space-y-5">
+          {
+            info.map((item) => (
+              <li class="flex items-start gap-4">
+                <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-fire-600 text-white">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={item.icon} /></svg>
+                </span>
+                <div>
+                  <div class="text-xs uppercase tracking-wider text-ink-400">{item.label}</div>
+                  <div class="text-ink-800">{item.value}</div>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="mt-8 overflow-hidden rounded-xl border border-ink-200">
+          <iframe
+            title="map"
+            class="h-64 w-full"
+            loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-89.10%2C42.27%2C-89.00%2C42.33&layer=mapnik"
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="reveal rounded-xl border border-ink-200 bg-white p-7 shadow-sm">
+        <h2 class="heading-condensed text-2xl uppercase text-ink-900">{t('contact.form.title')}</h2>
+        <form class="mt-6 space-y-4" onsubmit="event.preventDefault(); this.reset(); document.getElementById('contact-ok').classList.remove('hidden');">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <label class="block">
+              <span class="mb-1 block text-sm font-medium text-ink-700">{t('contact.form.name')}</span>
+              <input type="text" required class="w-full rounded-md border border-ink-300 px-3 py-2.5 outline-none focus:border-fire-600" />
+            </label>
+            <label class="block">
+              <span class="mb-1 block text-sm font-medium text-ink-700">{t('contact.form.email')}</span>
+              <input type="email" required class="w-full rounded-md border border-ink-300 px-3 py-2.5 outline-none focus:border-fire-600" />
+            </label>
+          </div>
+          <label class="block">
+            <span class="mb-1 block text-sm font-medium text-ink-700">{t('contact.form.subject')}</span>
+            <input type="text" class="w-full rounded-md border border-ink-300 px-3 py-2.5 outline-none focus:border-fire-600" />
+          </label>
+          <label class="block">
+            <span class="mb-1 block text-sm font-medium text-ink-700">{t('contact.form.message')}</span>
+            <textarea rows="5" required class="w-full rounded-md border border-ink-300 px-3 py-2.5 outline-none focus:border-fire-600"></textarea>
+          </label>
+          <button type="submit" class="w-full rounded-md bg-fire-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-fire-500">
+            {t('contact.form.submit')}
+          </button>
+          <p id="contact-ok" class="hidden rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">✓ {t('contact.form.note')}</p>
+          <p class="text-center text-xs text-ink-400">{t('contact.form.note')}</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

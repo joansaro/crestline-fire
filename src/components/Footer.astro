@@ -1,0 +1,90 @@
+---
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+import { contact } from '../data/department';
+import Emblem from './Emblem.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const year = 2026;
+
+const links = [
+  { key: 'nav.about', path: '/about' },
+  { key: 'nav.stations', path: '/stations' },
+  { key: 'nav.apparatus', path: '/apparatus' },
+  { key: 'nav.news', path: '/news' },
+  { key: 'nav.prevention', path: '/prevention' },
+  { key: 'nav.join', path: '/join' },
+  { key: 'nav.contact', path: '/contact' },
+] as const;
+
+const socials = [
+  { label: 'Facebook', href: contact.social.facebook, d: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z' },
+  { label: 'Instagram', href: contact.social.instagram, d: 'M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z' },
+  { label: 'YouTube', href: contact.social.youtube, d: 'M23 12s0-3.5-.5-5a3 3 0 0 0-2-2C18.5 4.5 12 4.5 12 4.5s-6.5 0-8.5.5a3 3 0 0 0-2 2C1 8.5 1 12 1 12s0 3.5.5 5a3 3 0 0 0 2 2c2 .5 8.5.5 8.5.5s6.5 0 8.5-.5a3 3 0 0 0 2-2c.5-1.5.5-5 .5-5zM10 15.5v-7l6 3.5z' },
+];
+---
+
+<!-- Emergency strip -->
+<div class="stripe-accent h-3"></div>
+
+<footer class="bg-ink-950 text-ink-300">
+  <div class="container-page grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <a href={localizePath('/', lang)} class="flex items-center gap-3 text-white">
+        <span class="text-fire-600"><Emblem class="h-12 w-12" /></span>
+        <span class="leading-tight">
+          <span class="block heading-condensed text-xl font-bold">{t('brand.name')}</span>
+          <span class="block text-[10px] uppercase tracking-[0.2em] text-ink-400">Fire &amp; Rescue</span>
+        </span>
+      </a>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed">{t('brand.tagline')}</p>
+      <p class="mt-4 rounded-md border border-fire-800 bg-fire-950/40 px-3 py-2 text-sm font-semibold text-fire-300">
+        {t('footer.emergency')}
+      </p>
+    </div>
+
+    <div>
+      <h3 class="heading-condensed mb-4 text-sm uppercase tracking-wider text-white">{t('footer.quickLinks')}</h3>
+      <ul class="space-y-2 text-sm">
+        {links.map((l) => (
+          <li>
+            <a href={localizePath(l.path, lang)} class="transition-colors hover:text-fire-400">{t(l.key)}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="heading-condensed mb-4 text-sm uppercase tracking-wider text-white">{t('footer.contact')}</h3>
+      <ul class="space-y-2 text-sm">
+        <li>{contact.address}</li>
+        <li><a href={`tel:${contact.phone.replace(/[^0-9]/g, '')}`} class="hover:text-fire-400">{contact.phone}</a></li>
+        <li><a href={`mailto:${contact.email}`} class="hover:text-fire-400">{contact.email}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="heading-condensed mb-4 text-sm uppercase tracking-wider text-white">{t('footer.follow')}</h3>
+      <div class="flex gap-3">
+        {socials.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.label}
+            class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-ink-700 text-ink-300 transition-colors hover:border-fire-600 hover:text-fire-500"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d={s.d} /></svg>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-ink-800">
+    <div class="container-page flex flex-col gap-2 py-5 text-xs text-ink-500 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {t('brand.full')}. {t('footer.rights')}</p>
+      <p class="max-w-md sm:text-right">{t('footer.disclaimer')}</p>
+    </div>
+  </div>
+</footer>

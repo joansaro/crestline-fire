@@ -1,0 +1,147 @@
+---
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+import { contact } from '../data/department';
+import LangToggle from './LangToggle.astro';
+import Emblem from './Emblem.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const links = [
+  { key: 'nav.home', path: '/' },
+  { key: 'nav.about', path: '/about' },
+  { key: 'nav.apparatus', path: '/apparatus' },
+  { key: 'nav.stations', path: '/stations' },
+  { key: 'nav.personnel', path: '/personnel' },
+  { key: 'nav.news', path: '/news' },
+  { key: 'nav.prevention', path: '/prevention' },
+  { key: 'nav.join', path: '/join' },
+  { key: 'nav.contact', path: '/contact' },
+] as const;
+
+const current = Astro.url.pathname.replace(/^\/en/, '').replace(/\/$/, '') || '/';
+const isActive = (path: string) => (path === '/' ? current === '/' : current.startsWith(path));
+---
+
+<!-- Unified civic header: emergency strip + nav travel together -->
+<header id="site-header" class="sticky top-0 z-50 text-white">
+  <div class="bg-fire-700">
+    <div class="container-page flex flex-wrap items-center justify-between gap-2 py-1.5 text-xs sm:text-sm">
+      <p class="heading-condensed flex items-center gap-2 font-semibold uppercase tracking-wider">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
+        </span>
+        {t('emergency.label')}: <span class="font-extrabold">{t('emergency.call')}</span>
+      </p>
+      <p class="text-fire-100">{t('emergency.nonEmergency')}</p>
+    </div>
+  </div>
+
+  <div class="border-b-4 border-fire-600 bg-ink-950/95 backdrop-blur">
+  <div class="container-page flex items-center justify-between gap-4 py-3">
+    <a href={localizePath('/', lang)} class="flex items-center gap-3 shrink-0">
+      <span class="text-fire-600"><Emblem class="h-11 w-11" /></span>
+      <span class="leading-tight">
+        <span class="block heading-condensed text-lg font-bold tracking-wide">{t('brand.name')}</span>
+        <span class="block text-[10px] uppercase tracking-[0.22em] text-ink-400">Fire &amp; Rescue</span>
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden items-center gap-0.5 xl:flex" aria-label="Primary">
+      {
+        links.map((l) => (
+          <a
+            href={localizePath(l.path, lang)}
+            class:list={[
+              'heading-condensed px-3 py-2 text-base font-semibold uppercase tracking-wide transition-colors',
+              isActive(l.path)
+                ? 'bg-fire-600 text-white'
+                : 'text-ink-200 hover:bg-white/10 hover:text-white',
+            ]}
+            aria-current={isActive(l.path) ? 'page' : undefined}
+          >
+            {t(l.key)}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <div class="hidden sm:block"><LangToggle /></div>
+      <a
+        href={localizePath('/join', lang)}
+        class="heading-condensed hidden bg-fire-600 px-5 py-2.5 text-base font-semibold uppercase tracking-wide text-white transition-colors hover:bg-fire-500 lg:inline-block"
+      >
+        {t('nav.join')}
+      </a>
+      <!-- Mobile toggle -->
+      <button
+        id="menu-toggle"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-ink-700 text-white xl:hidden"
+        aria-label={t('nav.menu')}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg class="menu-open h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="menu-close hidden h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <nav
+    id="mobile-menu"
+    class="hidden border-t border-ink-800 bg-ink-950 xl:hidden"
+    aria-label="Mobile"
+  >
+    <div class="container-page flex flex-col py-2">
+      {
+        links.map((l) => (
+          <a
+            href={localizePath(l.path, lang)}
+            class:list={[
+              'heading-condensed border-b border-ink-900 py-3 text-sm uppercase tracking-wide',
+              isActive(l.path) ? 'text-fire-500' : 'text-ink-200',
+            ]}
+          >
+            {t(l.key)}
+          </a>
+        ))
+      }
+      <div class="flex items-center justify-between py-3">
+        <LangToggle />
+        <a
+          href={`tel:${contact.phone.replace(/[^0-9]/g, '')}`}
+          class="text-sm text-ink-300"
+        >
+          {contact.phone}
+        </a>
+      </div>
+    </div>
+  </nav>
+  </div>
+</header>
+
+<script>
+  function setupNav() {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!toggle || !menu || toggle.dataset.bound === '1') return;
+    toggle.dataset.bound = '1';
+
+    const openIcon = toggle.querySelector('.menu-open');
+    const closeIcon = toggle.querySelector('.menu-close');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = !menu.classList.contains('hidden');
+      menu.classList.toggle('hidden');
+      openIcon?.classList.toggle('hidden', !isOpen);
+      closeIcon?.classList.toggle('hidden', isOpen);
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+  }
+  setupNav();
+  document.addEventListener('astro:page-load', setupNav);
+</script>

@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Barlow', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Barlow Condensed', 'Oswald', ui-sans-serif, system-ui, sans-serif;
+
+  /* Civic look: hard corners everywhere (pills via rounded-full stay). */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+
+  --color-fire-50: #fef2f2;
+  --color-fire-100: #fee2e2;
+  --color-fire-200: #fecaca;
+  --color-fire-300: #fca5a5;
+  --color-fire-400: #f87171;
+  --color-fire-500: #ef4444;
+  --color-fire-600: #dc2626;
+  --color-fire-700: #b91c1c;
+  --color-fire-800: #991b1b;
+  --color-fire-900: #7f1d1d;
+  --color-fire-950: #450a0a;
+
+  --color-ink-50: #f8fafc;
+  --color-ink-100: #f1f5f9;
+  --color-ink-200: #e2e8f0;
+  --color-ink-300: #cbd5e1;
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-600: #475569;
+  --color-ink-700: #334155;
+  --color-ink-800: #1e293b;
+  --color-ink-900: #0f172a;
+  --color-ink-950: #020617;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink-800);
+    background-color: #ffffff;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    line-height: 0.98;
+    text-transform: uppercase;
+  }
+
+  ::selection {
+    background-color: var(--color-fire-600);
+    color: #fff;
+  }
+
+  *:focus-visible {
+    outline: 3px solid var(--color-fire-600);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .heading-condensed {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  /* Civic kicker: thick red bar on the left, like official signage. */
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-fire-700);
+    border-left: 5px solid var(--color-fire-600);
+    padding-left: 0.75rem;
+  }
+  .kicker::before { content: none; }
+
+  /* Section blocks with a heavy left rule — replaces floating cards. */
+  .civic-block {
+    border-left: 5px solid var(--color-fire-600);
+    background: var(--color-ink-50);
+    padding: 1.5rem 1.75rem;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      to right,
+      rgba(2, 6, 23, 0.92) 0%,
+      rgba(2, 6, 23, 0.78) 45%,
+      rgba(2, 6, 23, 0.45) 100%
+    );
+  }
+
+  /* Diagonal section cut (civic banner feel). */
+  .cut-bottom {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3.5rem), 0 100%);
+  }
+  .cut-top {
+    clip-path: polygon(0 3.5rem, 100% 0, 100% 100%, 0 100%);
+    margin-top: -3.5rem;
+  }
+
+  /* Flat hover: border shift only. No floating cards. */
+  .card-hover {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .card-hover:hover {
+    border-color: var(--color-fire-600);
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Institutional = no scroll animation. Content is just there. */
+  .reveal { opacity: 1; transform: none; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+
+  .stripe-accent {
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--color-fire-600) 0,
+      var(--color-fire-600) 12px,
+      var(--color-ink-900) 12px,
+      var(--color-ink-900) 24px
+    );
+  }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

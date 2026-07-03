@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../PageHeader.astro';
+import NewsCard from '../NewsCard.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { news } from '../../data/department';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t('news.page.title')}>
+  <PageHeader
+    kicker={t('brand.short')}
+    title={t('news.page.title')}
+    subtitle={t('news.page.subtitle')}
+    image="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/U_S_Army_Garrison_Rheinland-Pfalz_Firefighter_Awards_Presentation_%286550987%29.jpg/1920px-U_S_Army_Garrison_Rheinland-Pfalz_Firefighter_Awards_Presentation_%286550987%29.jpg"
+  />
+
+  <section class="bg-ink-50 py-20">
+    <div class="container-page grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {news.map((item) => <NewsCard item={item} />)}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../PageHeader.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const values = [
+  'about.value1', 'about.value2', 'about.value3',
+  'about.value4', 'about.value5', 'about.value6',
+] as const;
+---
+
+<BaseLayout title={t('about.title')}>
+  <PageHeader
+    kicker={t('brand.short')}
+    title={t('about.title')}
+    image="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Mercedes_911_-_fire_engine_in_Bitola.JPG/1920px-Mercedes_911_-_fire_engine_in_Bitola.JPG"
+  />
+
+  <!-- Mission & Vision -->
+  <section class="bg-white py-20">
+    <div class="container-page grid gap-8 md:grid-cols-2">
+      <div class="reveal rounded-xl border-l-4 border-fire-600 bg-ink-50 p-8">
+        <h2 class="heading-condensed text-2xl uppercase text-ink-900">{t('about.mission.title')}</h2>
+        <p class="mt-4 leading-relaxed text-ink-600">{t('about.mission.text')}</p>
+      </div>
+      <div class="reveal rounded-xl border-l-4 border-ink-900 bg-ink-50 p-8">
+        <h2 class="heading-condensed text-2xl uppercase text-ink-900">{t('about.vision.title')}</h2>
+        <p class="mt-4 leading-relaxed text-ink-600">{t('about.vision.text')}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- History -->
+  <section class="bg-ink-50 py-20">
+    <div class="container-page grid items-center gap-12 lg:grid-cols-2">
+      <div class="reveal overflow-hidden rounded-xl shadow-lg">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/First_World_War%2C_tableau%2C_dog%2C_men%2C_uniform%2C_armband%2C_carabiner%2C_helmet%2C_firefighter_Fortepan_4690.jpg/1920px-First_World_War%2C_tableau%2C_dog%2C_men%2C_uniform%2C_armband%2C_carabiner%2C_helmet%2C_firefighter_Fortepan_4690.jpg"
+          alt={t('about.history.title')}
+          class="aspect-[4/3] w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div class="reveal">
+        <p class="kicker">{t('brand.tagline')}</p>
+        <h2 class="mt-3 text-3xl uppercase sm:text-4xl">{t('about.history.title')}</h2>
+        <div class="mt-5 space-y-4 leading-relaxed text-ink-600">
+          <p>{t('about.history.p1')}</p>
+          <p>{t('about.history.p2')}</p>
+          <p>{t('about.history.p3')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="bg-white py-20">
+    <div class="container-page">
+      <h2 class="reveal text-center text-3xl uppercase sm:text-4xl">{t('about.values.title')}</h2>
+      <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        {
+          values.map((v) => (
+            <div class="reveal rounded-xl border border-ink-200 bg-ink-50 p-5 text-center">
+              <span class="heading-condensed text-lg uppercase text-fire-700">{t(v)}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Service area -->
+  <section class="bg-ink-950 py-16 text-white">
+    <div class="container-page max-w-3xl text-center">
+      <h2 class="reveal text-3xl uppercase sm:text-4xl">{t('about.area.title')}</h2>
+      <p class="reveal mt-4 text-lg text-ink-200">{t('about.area.text')}</p>
+    </div>
+  </section>
+</BaseLayout>

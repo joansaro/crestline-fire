@@ -1,0 +1,36 @@
+---
+import { getLangFromUrl, useTranslations, localizePath } from '../../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="bg-white py-20">
+  <div class="container-page grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+    <div class="relative">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Fallen_Firefighter_%286397168%29.jpg/1920px-Fallen_Firefighter_%286397168%29.jpg"
+        alt={t('chief.name')}
+        class="aspect-[4/5] w-full border-b-8 border-fire-600 object-cover grayscale-[35%]"
+        loading="lazy"
+      />
+      <div class="bg-ink-950 px-5 py-4 text-white">
+        <div class="heading-condensed text-xl font-bold">{t('chief.name')}</div>
+        <div class="heading-condensed text-xs uppercase tracking-[0.2em] text-fire-400">{t('chief.role')}</div>
+      </div>
+    </div>
+
+    <div>
+      <p class="kicker">{t('chief.kicker')}</p>
+      <blockquote class="civic-block mt-6 text-2xl font-medium leading-snug text-ink-800 sm:text-3xl">
+        {t('chief.quote')}
+      </blockquote>
+      <a
+        href={localizePath('/about', lang)}
+        class="mt-8 inline-flex items-center gap-2 font-semibold text-fire-600 transition-colors hover:text-fire-700"
+      >
+        {t('chief.cta')}
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>

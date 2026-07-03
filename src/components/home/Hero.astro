@@ -1,0 +1,49 @@
+---
+import { getLangFromUrl, useTranslations, localizePath } from '../../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="cut-bottom relative isolate flex min-h-[82vh] items-center overflow-hidden bg-ink-950 text-white">
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Aircraft_Rescue_Firefighting_training.jpg/1920px-Aircraft_Rescue_Firefighting_training.jpg"
+    alt=""
+    class="absolute inset-0 -z-10 h-full w-full object-cover"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="hero-overlay absolute inset-0 -z-10"></div>
+
+  <div class="container-page grid items-end gap-10 py-24 lg:grid-cols-[1.5fr_1fr]">
+    <div>
+      <p class="kicker !border-fire-500 !text-fire-400">{t('hero.kicker')}</p>
+      <h1 class="mt-5 text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
+        {t('hero.title')}
+      </h1>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a
+          href={localizePath('/join', lang)}
+          class="heading-condensed bg-fire-600 px-8 py-4 text-lg font-semibold uppercase tracking-wide text-white transition-colors hover:bg-fire-500"
+        >
+          {t('hero.cta.join')} →
+        </a>
+        <a
+          href={localizePath('/contact', lang)}
+          class="heading-condensed border-2 border-white/40 px-8 py-4 text-lg font-semibold uppercase tracking-wide text-white transition-colors hover:border-white hover:bg-white/10"
+        >
+          {t('hero.cta.contact')}
+        </a>
+      </div>
+    </div>
+
+    <!-- Civic plaque: mission statement block instead of a floating card -->
+    <div class="border-l-4 border-fire-500 bg-ink-950/60 p-6 backdrop-blur-sm lg:mb-14">
+      <p class="text-lg leading-relaxed text-ink-100">
+        {t('hero.subtitle')}
+      </p>
+      <p class="heading-condensed mt-4 text-sm uppercase tracking-[0.2em] text-fire-400">
+        {t('brand.tagline')}
+      </p>
+    </div>
+  </div>
+</section>

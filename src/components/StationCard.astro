@@ -1,0 +1,35 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import type { Station } from '../data/department';
+interface Props { station: Station; }
+const { station } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<article class="card-hover reveal overflow-hidden rounded-xl border border-ink-200 bg-white shadow-sm">
+  <div class="relative aspect-[16/10] overflow-hidden">
+    <img src={station.image} alt={station.name[lang]} class="h-full w-full object-cover" loading="lazy" />
+    <span class="absolute left-3 top-3 rounded-md bg-fire-700 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
+      #{station.number}
+    </span>
+  </div>
+  <div class="p-5">
+    <h3 class="heading-condensed text-xl uppercase text-ink-900">{station.name[lang]}</h3>
+    <p class="mt-1 text-sm text-ink-500">{station.address}</p>
+    <dl class="mt-4 grid grid-cols-3 gap-2 border-t border-ink-100 pt-4 text-center">
+      <div>
+        <dt class="text-[10px] uppercase tracking-wider text-ink-400">{t('stations.crew')}</dt>
+        <dd class="heading-condensed text-lg font-bold text-fire-700">{station.crew}</dd>
+      </div>
+      <div>
+        <dt class="text-[10px] uppercase tracking-wider text-ink-400">{t('stations.apparatus')}</dt>
+        <dd class="heading-condensed text-lg font-bold text-fire-700">{station.apparatus}</dd>
+      </div>
+      <div>
+        <dt class="text-[10px] uppercase tracking-wider text-ink-400">{t('stations.builtIn')}</dt>
+        <dd class="heading-condensed text-lg font-bold text-fire-700">{station.built}</dd>
+      </div>
+    </dl>
+  </div>
+</article>

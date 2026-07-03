@@ -1,0 +1,26 @@
+---
+import { getLangFromUrl, alternatePath } from '../i18n/utils';
+import { languages, type Lang } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const codes = Object.keys(languages) as Lang[];
+---
+
+<div class="flex items-center gap-1 text-xs font-semibold">
+  {
+    codes.map((code) => (
+      <a
+        href={alternatePath(Astro.url, code)}
+        class:list={[
+          'rounded px-2 py-1 uppercase tracking-wide transition-colors',
+          code === lang
+            ? 'bg-fire-600 text-white'
+            : 'text-ink-300 hover:text-white',
+        ]}
+        aria-current={code === lang ? 'true' : undefined}
+      >
+        {languages[code]}
+      </a>
+    ))
+  }
+</div>

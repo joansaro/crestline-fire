@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getLangFromUrl, useTranslations, localizePath } from '../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title="404">
+  <section class="flex min-h-[60vh] items-center justify-center bg-ink-950 text-center text-white">
+    <div class="container-page">
+      <p class="heading-condensed text-7xl font-bold text-fire-600 sm:text-9xl">404</p>
+      <p class="mt-4 text-xl text-ink-200">
+        {lang === 'es' ? 'Página no encontrada.' : 'Page not found.'}
+      </p>
+      <a
+        href={localizePath('/', lang)}
+        class="mt-8 inline-block rounded-md bg-fire-600 px-7 py-3 font-semibold text-white transition-colors hover:bg-fire-500"
+      >
+        {t('nav.home')}
+      </a>
+    </div>
+  </section>
+</BaseLayout>

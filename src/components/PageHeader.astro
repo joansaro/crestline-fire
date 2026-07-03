@@ -1,0 +1,26 @@
+---
+interface Props {
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+  image?: string;
+}
+const {
+  kicker,
+  title,
+  subtitle,
+  image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/788th_Civil_Engineer_Fire_Department_firefighters_hose_down_car_in_August_4_2017_training_exercise.jpg/1920px-788th_Civil_Engineer_Fire_Department_firefighters_hose_down_car_in_August_4_2017_training_exercise.jpg',
+} = Astro.props;
+---
+
+<section class="cut-bottom relative isolate overflow-hidden bg-ink-950 text-white">
+  <img src={image} alt="" class="absolute inset-0 -z-10 h-full w-full object-cover opacity-35" loading="eager" />
+  <div class="hero-overlay absolute inset-0 -z-10"></div>
+  <div class="container-page py-20 pb-28 sm:py-24 sm:pb-32">
+    {kicker && <p class="kicker !border-fire-500 !text-fire-400">{kicker}</p>}
+    <h1 class="mt-4 max-w-4xl text-6xl sm:text-7xl md:text-8xl">{title}</h1>
+    {subtitle && (
+      <p class="mt-5 max-w-2xl border-l-4 border-fire-500 pl-4 text-lg text-ink-200">{subtitle}</p>
+    )}
+  </div>
+</section>

@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../PageHeader.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { personnel } from '../../data/department';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const groups = [
+  { key: 'command', label: t('personnel.command') },
+  { key: 'administration', label: t('personnel.administration') },
+  { key: 'operations', label: t('personnel.operations') },
+] as const;
+---
+
+<BaseLayout title={t('personnel.title')}>
+  <PageHeader
+    kicker={t('brand.short')}
+    title={t('personnel.title')}
+    subtitle={t('personnel.subtitle')}
+    image="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/French_and_US_Join_Forces_for_Firefighter_Training_Exercise_%288209455%29.jpg/1920px-French_and_US_Join_Forces_for_Firefighter_Training_Exercise_%288209455%29.jpg"
+  />
+
+  <section class="bg-ink-50 py-20">
+    <div class="container-page space-y-14">
+      {
+        groups.map((g) => (
+          <div>
+            <h2 class="reveal heading-condensed text-2xl uppercase text-ink-900">
+              <span class="border-b-4 border-fire-600 pb-1">{g.label}</span>
+            </h2>
+            <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {
+                personnel
+                  .filter((p) => p.group === g.key)
+                  .map((p) => (
+                    <article class="card-hover reveal rounded-xl border border-ink-200 bg-white p-6 text-center shadow-sm">
+                      <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-fire-700 text-2xl font-bold text-white heading-condensed">
+                        {p.initials}
+                      </div>
+                      <h3 class="mt-4 heading-condensed text-lg uppercase text-ink-900">{p.name}</h3>
+                      <p class="mt-1 text-sm text-fire-600">{p.rank[lang]}</p>
+                    </article>
+                  ))
+              }
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
